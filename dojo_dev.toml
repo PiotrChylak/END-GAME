@@ -4,10 +4,6 @@ description = "StwoTheEnd: A decision-based onchain text novel game. Begin your 
 seed = "StwoTheEnd"
 
 [world.socials]
-x = "https://x.com/ohayo_dojo"
-discord = "https://discord.gg/FB2wR6uF"
-github = "https://github.com/yourusername/StwoTheEnd"
-telegram = "https://t.me/dojoengine"
 
 [namespace]
 default = "StwoTheEnd"
