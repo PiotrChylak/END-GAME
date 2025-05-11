@@ -1,0 +1,4 @@
+target
+dojo_mainnet.toml
+src/tests/test_world.cairo
+

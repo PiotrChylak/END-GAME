@@ -1,0 +1,27 @@
+[package]
+cairo-version = "=2.10.1"
+name = "stwo_the_end"
+version = "0.1.0"
+edition = "2024_07"
+
+description = "StwoTheEnd: A decision-based onchain text novel game."
+
+[cairo]
+sierra-replace-ids = true
+
+[scripts]
+migrate = "sozo build && sozo migrate"                      # scarb run migrate
+# Update the following commands if you add new systems
+# spawn = "sozo execute StwoTheEnd-actions spawn --wait"
+# move = "sozo execute StwoTheEnd-actions move -c 1 --wait"
+
+[dependencies]
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
+starknet = "2.10.1"
+
+[[target.starknet-contract]]
+sierra = true
+build-external-contracts = ["dojo::world::world_contract::world"]
+
+[dev-dependencies]
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
