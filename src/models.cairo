@@ -60,3 +60,57 @@ pub struct StoryCompleted {
     pub final_node: u16,
 }
 
+#[derive(Drop, Serde, Introspect)]
+#[dojo::model]
+pub struct GamblingLevelConfig {
+    #[key]
+    pub player: ContractAddress,
+    pub level: felt252,
+    pub multiplier: Multiplier,
+    pub chances: Chances,
+}
+
+# [derive(Serde, Copy, Drop, Introspect, PartialEq)]
+pub enum Multiplier {
+    Little,
+    Low,
+    Mid,
+    High,
+    Huge,
+}
+
+# [derive(Serde, Copy, Drop, Introspect, PartialEq)]
+pub enum Chances {
+    Huge,
+    High,
+    Mid,
+    Low,
+    Little,
+}
+
+impl Multiplierx10_felt252 of Into<Multiplier, felt252> {
+ 
+   fn into(self: Multiplier) -> felt252 {
+       match self {
+           Multiplier::Little => 11,
+           Multiplier::Low => 13,
+           Multiplier::Mid => 15,
+           Multiplier::High => 20,
+           Multiplier::Huge => 30,
+       }
+   }
+}
+
+impl Chancesx100_felt252 of Into<Chances, felt252> {
+
+    fn into(self: Chances) -> felt252 {
+        match self {
+            Chances::Huge => 90,
+            Chances::High => 70,
+            Chances::Mid => 45,
+            Chances::Low => 15,
+            Chances::Little => 5,
+        }
+    }
+}
+

@@ -1,9 +1,9 @@
 {
   "world": {
-    "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x65ee8188c171a836294feaa931f1c78b5f18957791c039e84ee40b4b3e85d3e",
-    "seed": "dojo_starter",
-    "name": "Dojo starter",
+    "class_hash": "0x4c60dc46a8ca8bb47675b7b914053cef769afbf0e340523187336b72bd71d1f",
+    "address": "0x685becdf5a7afaf42fc6dc9b50a655fc55afaac3a8c9655237fa7786cd3af95",
+    "seed": "StwoTheEnd",
+    "name": "StwoTheEnd",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -693,6 +693,22 @@
           },
           {
             "type": "function",
+            "name": "owners_count",
+            "inputs": [
+              {
+                "name": "resource",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u64"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "is_writer",
             "inputs": [
               {
@@ -1312,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x62f6a8b1bc8f4b45985eaff3b00f85f370d6eb8dcb038072f3bf34fba0dd855",
-      "class_hash": "0x7e929027a6456c78b98bd4b54a4ab5db0058fae29e5c3a35d87aae49655236",
+      "address": "0x2363c9405f0495e0bc0bf8508317e89c971ce32f1bacab2b8028488c3318960",
+      "class_hash": "0x4a9dfebda5b12b8de5238177d9a6aa21189cdae4099aacbd60ff6d6b6f1ced6",
       "abi": [
         {
           "type": "impl",
@@ -1367,53 +1383,147 @@
         },
         {
           "type": "impl",
-          "name": "ActionsImpl",
-          "interface_name": "dojo_starter::systems::actions::IActions"
+          "name": "GameImpl",
+          "interface_name": "stwo_the_end::systems::actions::ITextNovelGame"
         },
         {
           "type": "enum",
-          "name": "dojo_starter::models::Direction",
+          "name": "core::bool",
           "variants": [
             {
-              "name": "Left",
+              "name": "False",
               "type": "()"
             },
             {
-              "name": "Right",
-              "type": "()"
-            },
-            {
-              "name": "Up",
-              "type": "()"
-            },
-            {
-              "name": "Down",
+              "name": "True",
               "type": "()"
             }
           ]
         },
         {
+          "type": "struct",
+          "name": "stwo_the_end::models::StoryNodeMeta",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "text",
+              "type": "core::felt252"
+            },
+            {
+              "name": "is_ending",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "stwo_the_end::models::Choice",
+          "members": [
+            {
+              "name": "node_id",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "choice_id",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "text",
+              "type": "core::felt252"
+            },
+            {
+              "name": "next_node",
+              "type": "core::integer::u16"
+            }
+          ]
+        },
+        {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::IActions",
+          "name": "stwo_the_end::systems::actions::ITextNovelGame",
           "items": [
             {
               "type": "function",
-              "name": "spawn",
+              "name": "start_new_game",
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
             },
             {
               "type": "function",
-              "name": "move",
+              "name": "make_decision",
               "inputs": [
                 {
-                  "name": "direction",
-                  "type": "dojo_starter::models::Direction"
+                  "name": "choice",
+                  "type": "core::integer::u8"
                 }
               ],
-              "outputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u16"
+                }
+              ],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_current_node",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u16"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "is_story_completed",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_node_meta",
+              "inputs": [
+                {
+                  "name": "node_id",
+                  "type": "core::integer::u16"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "stwo_the_end::models::StoryNodeMeta"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_choice",
+              "inputs": [
+                {
+                  "name": "node_id",
+                  "type": "core::integer::u16"
+                },
+                {
+                  "name": "choice_id",
+                  "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "stwo_the_end::models::Choice"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -1516,7 +1626,7 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::systems::actions::actions::Event",
+          "name": "stwo_the_end::systems::actions::actions::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1533,11 +1643,11 @@
         }
       ],
       "init_calldata": [],
-      "tag": "dojo_starter-actions",
-      "selector": "0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33",
+      "tag": "StwoTheEnd-actions",
+      "selector": "0x3a5b0ae756e85cee8b9f56a6044bda32a5848642b5ea2c6621d839c5e89e694",
       "systems": [
-        "spawn",
-        "move",
+        "start_new_game",
+        "make_decision",
         "upgrade"
       ]
     }
@@ -1546,29 +1656,41 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x5dee089cbc4c8e6b4dbb08ee91ca9e275c5f5bb0be158ebae60ecd3b06989dd",
-      "tag": "dojo_starter-DirectionsAvailable",
-      "selector": "0x77844f1facb51e60e546a9832d56c6bd04fa23be4fd5b57290caae5e9a3c1e4"
+      "class_hash": "0x4aa09396b419ae9bc8524c4db4782cf1dbff03ff47bf3f2311e29d8d91b509e",
+      "tag": "StwoTheEnd-Choice",
+      "selector": "0x4b1abbb5b40bb0b5270a7e7f3a446f2645de54e071d7ee9be83ad2c6e4ee15f"
     },
     {
       "members": [],
-      "class_hash": "0x1a3faf9f018c2d792f06a9b52bd0b01b78bd652cb2dafbb3869f12814f0825b",
-      "tag": "dojo_starter-Moves",
-      "selector": "0x2a29373f1af8348bd366a990eb3a342ef2cbe5e85160539eaca3441a673f468"
+      "class_hash": "0x782b71a2c8a82786d7909ebbf475abf2017e4e57886909f056a1e5497d87c6b",
+      "tag": "StwoTheEnd-PlayerDecision",
+      "selector": "0x5f890712a3a32ee034cbeb69c411393416a27fb8347ac30a5232a3aea9b353f"
     },
     {
       "members": [],
-      "class_hash": "0x6dd8181e9e5a571c80803ab2adde6141f030decdef460106d757aa083f26a70",
-      "tag": "dojo_starter-Position",
-      "selector": "0x2ac8b4c190f7031b9fc44312e6b047a1dce0b3f2957c33a935ca7846a46dd5b"
+      "class_hash": "0x3ee83fddb5cf1df136abd3853b97af290b3e62e1511b9b228efb613397cfc0c",
+      "tag": "StwoTheEnd-PlayerState",
+      "selector": "0x23e5d09acead1b68b41efabecc4516f7d6c5243eddbe773976f41c9d7836578"
+    },
+    {
+      "members": [],
+      "class_hash": "0x2747c22f89223a34f766dd7f6415d262a37397a136c07a2b0dd274d314a8600",
+      "tag": "StwoTheEnd-StoryNodeMeta",
+      "selector": "0x7b56295f1a75d937bca692c66811437425aa330d52bef91abd7905c6182f2aa"
     }
   ],
   "events": [
     {
       "members": [],
-      "class_hash": "0xe7390da745519ad5484c14f6c32caef28e53ed496e78c086a0689bb2007112",
-      "tag": "dojo_starter-Moved",
-      "selector": "0x504403e5c02b6442527721fc464d9ea5fc8f1ee600ab5ccd5c0845d36fd45f1"
+      "class_hash": "0xcf932f49e1ad3fa9e0ad2d60aada28e535215e990994e9d3074094b9c93c80",
+      "tag": "StwoTheEnd-Decision",
+      "selector": "0x524e539f7a0817f981250fb396a6e3b4d0751b0d5adc5d13e73b0b466d8d9cf"
+    },
+    {
+      "members": [],
+      "class_hash": "0x352bd940699c4535266a6743af9bc79c4bd2b9262c619eee5b52f60079a87d2",
+      "tag": "StwoTheEnd-StoryCompleted",
+      "selector": "0x3880ab8acf304a612f4bbf39d8ad712da7da810b06324f5b92a3c9b1df01e01"
     }
   ],
   "external_contracts": []

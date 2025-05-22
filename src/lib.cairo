@@ -3,7 +3,6 @@ pub mod systems {
 }
 
 pub mod models;
-pub mod story_data;
 
 pub mod tests {
     pub mod test_world;
