@@ -8,6 +8,7 @@ use starknet::ContractAddress;
 pub struct PlayerState {
     #[key]
     pub player: ContractAddress,
+    pub balance: felt252,
     pub current_node: u16,
     pub story_completed: bool,
 }
@@ -24,7 +25,7 @@ pub struct PlayerDecision {
 
 #[derive(Drop, Serde, Introspect)]
 #[dojo::model]
-pub struct StoryNodeMeta {
+pub struct NodeMeta {
     #[key]
     pub id: u16,
     pub text: felt252,
@@ -88,29 +89,38 @@ pub enum Chances {
     Little,
 }
 
-impl Multiplierx10_felt252 of Into<Multiplier, felt252> {
+#[derive(Drop, Serde)]
+#[dojo::event]
+pub struct GamblingOutcome {
+    #[key]
+    player: ContractAddress,
+    win: bool,
+    profit: felt252,
+    new_balance: felt252,
+}
+
+impl MultiplierFelt252 of Into<Multiplier, felt252> {
  
    fn into(self: Multiplier) -> felt252 {
        match self {
-           Multiplier::Little => 11,
-           Multiplier::Low => 13,
-           Multiplier::Mid => 15,
-           Multiplier::High => 20,
-           Multiplier::Huge => 30,
+           Multiplier::Little => 2,
+           Multiplier::Low => 3,
+           Multiplier::Mid => 4,
+           Multiplier::High => 5,
+           Multiplier::Huge => 7,
        }
    }
 }
 
-impl Chancesx100_felt252 of Into<Chances, felt252> {
+impl ChancesU8 of Into<Chances, u8> {
 
-    fn into(self: Chances) -> felt252 {
+    fn into(self: Chances) -> u8 {
         match self {
-            Chances::Huge => 90,
-            Chances::High => 70,
-            Chances::Mid => 45,
-            Chances::Low => 15,
-            Chances::Little => 5,
+            Chances::Huge => 2,
+            Chances::High => 3,
+            Chances::Mid => 4,
+            Chances::Low => 6,
+            Chances::Little => 7,
         }
     }
 }
-
