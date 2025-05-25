@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x2363c9405f0495e0bc0bf8508317e89c971ce32f1bacab2b8028488c3318960",
-      "class_hash": "0x4a9dfebda5b12b8de5238177d9a6aa21189cdae4099aacbd60ff6d6b6f1ced6",
+      "address": "0xba7ace5122f99f9ddf54d204b88996377da57098466b58685573ec9fbaf9de",
+      "class_hash": "0x787520432d650a356d0874f255d7a467761eb1fdb313ab13904b38c555115e3",
       "abi": [
         {
           "type": "impl",
@@ -1387,60 +1387,6 @@
           "interface_name": "stwo_the_end::systems::actions::ITextNovelGame"
         },
         {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "stwo_the_end::models::StoryNodeMeta",
-          "members": [
-            {
-              "name": "id",
-              "type": "core::integer::u16"
-            },
-            {
-              "name": "text",
-              "type": "core::felt252"
-            },
-            {
-              "name": "is_ending",
-              "type": "core::bool"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "stwo_the_end::models::Choice",
-          "members": [
-            {
-              "name": "node_id",
-              "type": "core::integer::u16"
-            },
-            {
-              "name": "choice_id",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "text",
-              "type": "core::felt252"
-            },
-            {
-              "name": "next_node",
-              "type": "core::integer::u16"
-            }
-          ]
-        },
-        {
           "type": "interface",
           "name": "stwo_the_end::systems::actions::ITextNovelGame",
           "items": [
@@ -1474,53 +1420,6 @@
               "outputs": [
                 {
                   "type": "core::integer::u16"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "is_story_completed",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_node_meta",
-              "inputs": [
-                {
-                  "name": "node_id",
-                  "type": "core::integer::u16"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "stwo_the_end::models::StoryNodeMeta"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_choice",
-              "inputs": [
-                {
-                  "name": "node_id",
-                  "type": "core::integer::u16"
-                },
-                {
-                  "name": "choice_id",
-                  "type": "core::integer::u8"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "stwo_the_end::models::Choice"
                 }
               ],
               "state_mutability": "view"
@@ -1662,21 +1561,27 @@
     },
     {
       "members": [],
+      "class_hash": "0x7ec48a1c716d5b2873fe39457f95475e953acbaffd64437d64ae397d07baba9",
+      "tag": "StwoTheEnd-GamblingLevelConfig",
+      "selector": "0x67d9b151ce36e309bbc26cfe094615d4f53469ec872986813b02b90f92d6e11"
+    },
+    {
+      "members": [],
+      "class_hash": "0x3f0dbb63c1dc1ee599ddba33da6b10c39841c69477fdde58315ba80af19eb8b",
+      "tag": "StwoTheEnd-NodeMeta",
+      "selector": "0x420998884581cca8715ec78183286dc5254cec5f2bc9f9dcdae3a2ab69b9c45"
+    },
+    {
+      "members": [],
       "class_hash": "0x782b71a2c8a82786d7909ebbf475abf2017e4e57886909f056a1e5497d87c6b",
       "tag": "StwoTheEnd-PlayerDecision",
       "selector": "0x5f890712a3a32ee034cbeb69c411393416a27fb8347ac30a5232a3aea9b353f"
     },
     {
       "members": [],
-      "class_hash": "0x3ee83fddb5cf1df136abd3853b97af290b3e62e1511b9b228efb613397cfc0c",
+      "class_hash": "0x16c6bbe6956d193ada723b01d9f556d27de872471bbe8e0318fa9850cbecdee",
       "tag": "StwoTheEnd-PlayerState",
       "selector": "0x23e5d09acead1b68b41efabecc4516f7d6c5243eddbe773976f41c9d7836578"
-    },
-    {
-      "members": [],
-      "class_hash": "0x2747c22f89223a34f766dd7f6415d262a37397a136c07a2b0dd274d314a8600",
-      "tag": "StwoTheEnd-StoryNodeMeta",
-      "selector": "0x7b56295f1a75d937bca692c66811437425aa330d52bef91abd7905c6182f2aa"
     }
   ],
   "events": [
@@ -1685,6 +1590,18 @@
       "class_hash": "0xcf932f49e1ad3fa9e0ad2d60aada28e535215e990994e9d3074094b9c93c80",
       "tag": "StwoTheEnd-Decision",
       "selector": "0x524e539f7a0817f981250fb396a6e3b4d0751b0d5adc5d13e73b0b466d8d9cf"
+    },
+    {
+      "members": [],
+      "class_hash": "0x48afd4626b6c21cfbef92b1561f237aa13ed1207293d5912329cbdb78c78111",
+      "tag": "StwoTheEnd-GamblingOutcome",
+      "selector": "0x1e719262f616a0965e551314b23a707df9b31ec0e47de205e25c597b93e7719"
+    },
+    {
+      "members": [],
+      "class_hash": "0x78b92865a04f31454918266ee551b23a7f8b1956ebff899c5ab636415b30fc9",
+      "tag": "StwoTheEnd-InvalidChoice",
+      "selector": "0x1a0630e008a4afd26bd0a8cc1b1f22e6d719c93e357e0919dfd3fda30aab3b4"
     },
     {
       "members": [],

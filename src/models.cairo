@@ -23,7 +23,7 @@ pub struct PlayerDecision {
     pub choice: u8,
 }
 
-#[derive(Drop, Serde, Introspect)]
+#[derive(Drop, Serde, Introspect, Copy)]
 #[dojo::model]
 pub struct NodeMeta {
     #[key]
@@ -88,6 +88,15 @@ pub enum Chances {
     Mid,
     Low,
     Little,
+}
+
+#[derive(Drop, Serde, Copy)]
+#[dojo::event]
+pub struct InvalidChoice{
+    #[key]
+    pub node_id: u16,
+    pub text: felt252,
+    pub choice: u8,
 }
 
 #[derive(Drop, Serde)]
