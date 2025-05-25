@@ -29,6 +29,7 @@ pub struct NodeMeta {
     #[key]
     pub id: u16,
     pub text: felt252,
+    pub gambling_node: bool,
     pub is_ending: bool,
 }
 
@@ -66,7 +67,7 @@ pub struct StoryCompleted {
 pub struct GamblingLevelConfig {
     #[key]
     pub player: ContractAddress,
-    pub level: felt252,
+    pub level: u8,
     pub multiplier: Multiplier,
     pub chances: Chances,
 }
@@ -93,10 +94,9 @@ pub enum Chances {
 #[dojo::event]
 pub struct GamblingOutcome {
     #[key]
-    player: ContractAddress,
-    win: bool,
-    profit: felt252,
-    new_balance: felt252,
+    pub player: ContractAddress,
+    pub profit: felt252,
+    pub new_balance: felt252,
 }
 
 impl MultiplierFelt252 of Into<Multiplier, felt252> {
