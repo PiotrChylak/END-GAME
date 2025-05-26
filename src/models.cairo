@@ -133,3 +133,26 @@ impl ChancesU8 of Into<Chances, u8> {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{Choice, Multiplier, Chances, MultiplierFelt252, ChancesU8};
+
+    #[test]
+    fn test_multiplier_into_felt252() {
+        assert(MultiplierFelt252::into(Multiplier::Huge) == 7, 'Huge multiplier should be 7');
+        assert(MultiplierFelt252::into(Multiplier::Low) == 3, 'Low multiplier should be 3');
+    }
+
+    #[test]
+    fn test_chances_into_u8() {
+        assert(ChancesU8::into(Chances::Huge) == 2, 'Huge chance should be 2');
+        assert(ChancesU8::into(Chances::Little) == 7, 'Little chance should be 7');
+    }
+
+    #[test]
+    fn test_choice_struct() {
+        let choice = Choice { node_id: 1, choice_id: 2, text: 'Go right', next_node: 12 };
+        assert(choice.next_node == 12, 'Choice next_node should be 12');
+    }
+}

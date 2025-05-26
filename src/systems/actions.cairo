@@ -7,7 +7,7 @@ use stwo_the_end::models::{
 use origami_random::dice::{DiceTrait};
 
 #[starknet::interface]
-trait ITextNovelGame<T> {
+pub trait ITextNovelGame<T> {
     fn start_new_game(ref self: T);
     fn make_decision(ref self: T, choice: u8) -> u16;
     fn get_current_node(self: @T) -> u16;
@@ -16,7 +16,7 @@ trait ITextNovelGame<T> {
 }
 
 #[dojo::contract]
-mod actions {
+pub mod actions {
     use super::{
         ITextNovelGame, PlayerState, NodeMeta, Choice, PlayerDecision, Decision, StoryCompleted,
         GamblingLevelConfig, GamblingOutcome, InvalidChoice, get_level_config, calculate_outcome
@@ -202,7 +202,7 @@ struct StaticGamblingConfig {
     chances: Chances,
 }
 
-fn get_level_config(level: u8) -> StaticGamblingConfig {
+pub fn get_level_config(level: u8) -> StaticGamblingConfig {
     match level {
         0 => StaticGamblingConfig { level: 1, multiplier: Multiplier::Low, chances: Chances::High },
         1 => StaticGamblingConfig { level: 2, multiplier: Multiplier::Mid, chances: Chances::Mid },
