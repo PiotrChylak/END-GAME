@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0xba7ace5122f99f9ddf54d204b88996377da57098466b58685573ec9fbaf9de",
-      "class_hash": "0x787520432d650a356d0874f255d7a467761eb1fdb313ab13904b38c555115e3",
+      "address": "0x525b66cd9e8c61c1b842653719cf0afd0798426172aad6e046afc7976f68915",
+      "class_hash": "0x616e5dc8c9fdb26b4367ea925f3699b9b8e34a05848df98afbbc7d1158ab7cd",
       "abi": [
         {
           "type": "impl",
@@ -1587,25 +1587,25 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0xcf932f49e1ad3fa9e0ad2d60aada28e535215e990994e9d3074094b9c93c80",
+      "class_hash": "0x302bc2843ceb04e8b5f97a67f5ebe7caf97dc0bc7ad519d6152236ef0c5bba1",
       "tag": "StwoTheEnd-Decision",
       "selector": "0x524e539f7a0817f981250fb396a6e3b4d0751b0d5adc5d13e73b0b466d8d9cf"
     },
     {
       "members": [],
-      "class_hash": "0x48afd4626b6c21cfbef92b1561f237aa13ed1207293d5912329cbdb78c78111",
+      "class_hash": "0x1f5ebddcd2e6d56b3c81f42aa7ff3e5307904abf894c7b5bd54f0b49ac58b43",
       "tag": "StwoTheEnd-GamblingOutcome",
       "selector": "0x1e719262f616a0965e551314b23a707df9b31ec0e47de205e25c597b93e7719"
     },
     {
       "members": [],
-      "class_hash": "0x78b92865a04f31454918266ee551b23a7f8b1956ebff899c5ab636415b30fc9",
+      "class_hash": "0x3a543e423e3f21175d2bcb71730b2a0f5bb393abe8f6c8f22aaebcc8f794995",
       "tag": "StwoTheEnd-InvalidChoice",
       "selector": "0x1a0630e008a4afd26bd0a8cc1b1f22e6d719c93e357e0919dfd3fda30aab3b4"
     },
     {
       "members": [],
-      "class_hash": "0x352bd940699c4535266a6743af9bc79c4bd2b9262c619eee5b52f60079a87d2",
+      "class_hash": "0x74aa1fc5655ae8a90c914974f0baf6f6abd77839c6b1e520b4ca1b8eba7965f",
       "tag": "StwoTheEnd-StoryCompleted",
       "selector": "0x3880ab8acf304a612f4bbf39d8ad712da7da810b06324f5b92a3c9b1df01e01"
     }

@@ -1,5 +1,5 @@
-// Decision-based Text Novel Game Contract - Models (Scalable Structure)
-// Contains only storage, events, enums, and interface definitions.
+// Decision-based Text Novel Game Contract - Models
+// Contains only storage, enums etc.
 
 use starknet::ContractAddress;
 
@@ -44,24 +44,6 @@ pub struct Choice {
     pub next_node: u16,
 }
 
-#[derive(Drop, Serde)]
-#[dojo::event]
-pub struct Decision {
-    #[key]
-    pub player: ContractAddress,
-    pub node_id: u16,
-    pub choice: u8,
-    pub next_node: u16,
-}
-
-#[derive(Drop, Serde)]
-#[dojo::event]
-pub struct StoryCompleted {
-    #[key]
-    pub player: ContractAddress,
-    pub final_node: u16,
-}
-
 #[derive(Drop, Serde, Introspect)]
 #[dojo::model]
 pub struct GamblingLevelConfig {
@@ -88,24 +70,6 @@ pub enum Chances {
     Mid,
     Low,
     Little,
-}
-
-#[derive(Drop, Serde, Copy)]
-#[dojo::event]
-pub struct InvalidChoice{
-    #[key]
-    pub node_id: u16,
-    pub text: felt252,
-    pub choice: u8,
-}
-
-#[derive(Drop, Serde)]
-#[dojo::event]
-pub struct GamblingOutcome {
-    #[key]
-    pub player: ContractAddress,
-    pub profit: felt252,
-    pub new_balance: felt252,
 }
 
 impl MultiplierFelt252 of Into<Multiplier, felt252> {

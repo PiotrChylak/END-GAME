@@ -1,3 +1,9 @@
 target
+manifest_dev.json
+Scarb.lock
 dojo_mainnet.toml
+
+# Environment files
+.env
+.env.*
 
