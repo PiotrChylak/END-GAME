@@ -10,9 +10,9 @@ description = "StwoTheEnd: A decision-based onchain text novel game."
 sierra-replace-ids = true
 
 [scripts]
-migrate = "sozo build && sozo migrate"                      # scarb run migrate
-# Update the following commands if you add new systems
-# spawn = "sozo execute StwoTheEnd-actions spawn --wait"
+migrate = "sozo build && sozo migrate" # scarb run migrate
+start = "sozo execute StwoTheEnd-actions start_new_game --wait"
+state = "sozo model get PlayerState 0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec"
 # move = "sozo execute StwoTheEnd-actions move -c 1 --wait"
 
 [dependencies]
