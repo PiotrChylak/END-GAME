@@ -1,9 +1,21 @@
-target
+# Build artifacts
+target/
+**/target/
+
+# Generated files
 manifest_dev.json
-Scarb.lock
-dojo_mainnet.toml
+manifest.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # Environment files
 .env
 .env.*
+
+# Scarb lock file
+Scarb.lock
 
