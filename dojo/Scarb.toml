@@ -19,7 +19,7 @@ state = "sozo model get PlayerState 0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
 starknet = "2.10.1"
 origami_random = { git = "https://github.com/dojoengine/origami" }
-# openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.14.0" }
+openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.20.0" }
 
 
 [[target.starknet-contract]]
