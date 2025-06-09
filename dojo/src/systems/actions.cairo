@@ -13,7 +13,7 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait ITextNovelGame<T> {
-    fn start_new_game(ref self: T, token_address: ContractAddress, amount: u256);
+    fn start_new_game(ref self: T, token_address: ContractAddress);
     fn make_decision(ref self: T, choice: u8) -> u16;
 }
 
@@ -31,22 +31,17 @@ pub mod actions {
 
     #[abi(embed_v0)]
     impl GameImpl of ITextNovelGame<ContractState> {
-        fn start_new_game(ref self: ContractState, token_address: ContractAddress, amount: u256) {
+        fn start_new_game(ref self: ContractState, token_address: ContractAddress) {
             let mut world = self.world_default();
             let player = get_caller_address();
 
             // Initialize the story tree
             tree_constructor(world);
 
-            //Send initial amount of tokens to player
-            transfer_token(token_address, player, amount);
-
             // Initialize player state
-            let balance = balance_of(token_address, player);
-
             world.write_model(@PlayerState { 
                 player, 
-                balance: balance.try_into().unwrap(), 
+                balance: 1000000000000000000, // thats value of 1 erc20 StwoTheEndToken
                 current_node: 1, 
                 story_completed: false
             });
@@ -93,14 +88,8 @@ pub mod actions {
             if node.gambling_node == true {
                 // If player chose to gamble (choice 1)
                 if choice == 1 {
-                    // Sending all tokens from player account to bank
-                    transfer_token(config.token, player, balance_of(config.token, player));
-                    
-                    // If outcome was positive for player send calculated amount of tokens to him from bank
                     let outcome = calculate_outcome(state.balance, config.chances, config.multiplier);
-                    if (outcome != 0){
-                        transfer_token(config.token, player, outcome.try_into().unwrap())
-                    }
+                    state.balance = outcome;
 
                     world.emit_event(
                         @GamblingOutcome {
@@ -125,12 +114,12 @@ pub mod actions {
                     );
             }
 
-            state.balance = balance_of(config.token, player).try_into().unwrap();
             state.current_node = next_node;
             
             let node_meta: NodeMeta = world.read_model(next_node);
             if node_meta.is_ending {
                 state.story_completed = true;
+                transfer_token(config.token, player, state.balance.try_into().unwrap()); // send calculated (thru whole game) amount of tokens to player (it could be 0)
                 world.emit_event(@StoryCompleted { player, final_node: next_node });
             }
             world.emit_event(@Decision { player, node_id: state.current_node, choice, next_node });
