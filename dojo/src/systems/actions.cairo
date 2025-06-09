@@ -5,45 +5,48 @@ use stwo_the_end::events::{Decision, StoryCompleted, GamblingOutcome, InvalidCho
 use super::tree_constructor::tree_constructor;
 
 use origami_random::dice::{DiceTrait};
-//use core::integer::u256;
+use core::integer::u256;
 
-// Import the token dispatcher trait
-// use super::token_dispatcher::ITokenDispatcherDispatcherTrait;
+use super::token_dispatcher::Token::ITokenDispatcher;
+use super::token_dispatcher::ITokenDispatcherTrait;
+use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait ITextNovelGame<T> {
-    fn start_new_game(ref self: T);
+    fn start_new_game(ref self: T, token_address: ContractAddress, amount: u256);
     fn make_decision(ref self: T, choice: u8) -> u16;
-    fn get_current_node(self: @T) -> u16;
-    // fn deposit(ref self: T, to: ContractAddress, amount: u256);
 }
 
 #[dojo::contract]
 pub mod actions {
     use super::{
         ITextNovelGame, PlayerState, NodeMeta, Choice, PlayerDecision, Decision, StoryCompleted,
-        GamblingLevelConfig, GamblingOutcome, InvalidChoice, get_level_config, calculate_outcome
+        GamblingLevelConfig, GamblingOutcome, InvalidChoice, tree_constructor, get_level_config, calculate_outcome, transfer_token, balance_of
     };
-    use starknet::{get_caller_address};
 
-    use dojo::model::{ModelStorage};
+    use starknet::{ContractAddress, get_caller_address};
+
+    use dojo::model::ModelStorage;
     use dojo::event::EventStorage;
-    use super::tree_constructor;
-    // use starknet::syscalls::call_contract_syscall;
 
     #[abi(embed_v0)]
     impl GameImpl of ITextNovelGame<ContractState> {
-        fn start_new_game(ref self: ContractState) {
+        fn start_new_game(ref self: ContractState, token_address: ContractAddress, amount: u256) {
             let mut world = self.world_default();
             let player = get_caller_address();
 
             // Initialize the story tree
             tree_constructor(world);
 
+            //Send initial amount of tokens to player
+            transfer_token(token_address, player, amount);
+
             // Initialize player state
+            let balance = balance_of(token_address, player);
+
             world.write_model(@PlayerState { 
                 player, 
-                balance: 100, 
+                balance: balance.try_into().unwrap(), 
                 current_node: 1, 
                 story_completed: false
             });
@@ -52,6 +55,7 @@ pub mod actions {
             let config = get_level_config(0);
             world.write_model(@GamblingLevelConfig { 
                 player: player, 
+                token: token_address,
                 level: config.level, 
                 multiplier: config.multiplier, 
                 chances: config.chances
@@ -62,9 +66,12 @@ pub mod actions {
             let mut world = self.world_default();
             let player = get_caller_address();
             let mut state: PlayerState = world.read_model(player);
+            
             let node: NodeMeta = world.read_model(state.current_node);
             let choice_struct: Choice = world.read_model((state.current_node, choice));
             let next_node = choice_struct.next_node;
+
+            let config: GamblingLevelConfig = world.read_model(player);
             
             // If next_node is 0, treat as invalid choice and return current node
             if next_node == 0{
@@ -86,11 +93,15 @@ pub mod actions {
             if node.gambling_node == true {
                 // If player chose to gamble (choice 1)
                 if choice == 1 {
-                    let config: GamblingLevelConfig = world.read_model(player);
-                    let outcome = calculate_outcome(
-                        state.balance, config.chances, config.multiplier,
-                    );
-                    state.balance = outcome;
+                    // Sending all tokens from player account to bank
+                    transfer_token(config.token, player, balance_of(config.token, player));
+                    
+                    // If outcome was positive for player send calculated amount of tokens to him from bank
+                    let outcome = calculate_outcome(state.balance, config.chances, config.multiplier);
+                    if (outcome != 0){
+                        transfer_token(config.token, player, outcome.try_into().unwrap())
+                    }
+
                     world.emit_event(
                         @GamblingOutcome {
                                 player,
@@ -101,13 +112,12 @@ pub mod actions {
                 }
 
                 // Update gambling level config regardless of choice
-                let current_config: GamblingLevelConfig = world.read_model(player);
-                let next_level = (current_config.level + 1) % 4;
+                let next_level = (config.level + 1) % 5;
                 let new_config = get_level_config(next_level);
-                world
-                    .write_model(
+                world.write_model(
                         @GamblingLevelConfig {
                             player,
+                            token: config.token,
                             level: new_config.level,
                             multiplier: new_config.multiplier,
                             chances: new_config.chances,
@@ -115,25 +125,18 @@ pub mod actions {
                     );
             }
 
+            state.balance = balance_of(config.token, player).try_into().unwrap();
             state.current_node = next_node;
+            
             let node_meta: NodeMeta = world.read_model(next_node);
             if node_meta.is_ending {
                 state.story_completed = true;
                 world.emit_event(@StoryCompleted { player, final_node: next_node });
-                // Game finished: send new balance to player
             }
             world.emit_event(@Decision { player, node_id: state.current_node, choice, next_node });
             world.write_model(@state);
             next_node
         }
-
-        fn get_current_node(self: @ContractState) -> u16 {
-            let world = self.world_default();
-            let player = get_caller_address();
-            let state: PlayerState = world.read_model(player);
-            state.current_node
-        }
-
     }
 
     #[generate_trait]
@@ -142,6 +145,17 @@ pub mod actions {
             self.world(@"StwoTheEnd")
         }
     }
+}
+
+pub fn balance_of(token_address: ContractAddress, account: ContractAddress) -> u256 {
+    let dispatcher = ITokenDispatcher { contract_address: token_address };
+    dispatcher.balance_of(token_address, account)
+}
+
+// Helper functions to transfer tokens
+pub fn transfer_token(token_address: ContractAddress, recipient: ContractAddress, amount: u256){
+    let dispatcher = ITokenDispatcher { contract_address: token_address};
+    dispatcher.transfer(token_address, recipient, amount);
 }
 
 fn calculate_outcome(mut balance: felt252, chances: Chances, multipliers: Multiplier) -> felt252 {
@@ -166,10 +180,11 @@ struct StaticGamblingConfig {
 
 fn get_level_config(level: u8) -> StaticGamblingConfig {
     match level {
-        0 => StaticGamblingConfig { level: 1, multiplier: Multiplier::Low, chances: Chances::High },
-        1 => StaticGamblingConfig { level: 2, multiplier: Multiplier::Mid, chances: Chances::Mid },
-        2 => StaticGamblingConfig { level: 3, multiplier: Multiplier::High, chances: Chances::Low },
-        3 => StaticGamblingConfig { level: 4, multiplier: Multiplier::Huge, chances: Chances::Little },
+        0 => StaticGamblingConfig { level: 1, multiplier: Multiplier::Little, chances: Chances::Huge },
+        1 => StaticGamblingConfig { level: 2, multiplier: Multiplier::Low, chances: Chances::High },
+        2 => StaticGamblingConfig { level: 3, multiplier: Multiplier::Mid, chances: Chances::Mid },
+        3 => StaticGamblingConfig { level: 4, multiplier: Multiplier::High, chances: Chances::Low },
+        4 => StaticGamblingConfig { level: 5, multiplier: Multiplier::Huge, chances: Chances::Little },
         _ => StaticGamblingConfig { level: 5, multiplier: Multiplier::Mid, chances: Chances::Low },
     }
 }

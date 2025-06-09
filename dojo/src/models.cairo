@@ -44,11 +44,12 @@ pub struct Choice {
     pub next_node: u16,
 }
 
-#[derive(Drop, Serde, Introspect)]
+#[derive(Drop, Serde, Introspect, Copy)]
 #[dojo::model]
 pub struct GamblingLevelConfig {
     #[key]
     pub player: ContractAddress,
+    pub token: ContractAddress,
     pub level: u8,
     pub multiplier: Multiplier,
     pub chances: Chances,
