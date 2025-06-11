@@ -16,6 +16,9 @@ manifest.json
 .env
 .env.*
 
-# Scarb lock file
+# Scarb && Cargo lock file
 Scarb.lock
+Cargo.lock
+
+
 

@@ -21,7 +21,7 @@ pub trait ITextNovelGame<T> {
 pub mod actions {
     use super::{
         ITextNovelGame, PlayerState, NodeMeta, Choice, PlayerDecision, Decision, StoryCompleted,
-        GamblingLevelConfig, GamblingOutcome, InvalidChoice, tree_constructor, get_level_config, calculate_outcome, transfer_token, balance_of
+        GamblingLevelConfig, GamblingOutcome, InvalidChoice, tree_constructor, get_level_config, calculate_outcome, transfer_token
     };
 
     use starknet::{ContractAddress, get_caller_address};

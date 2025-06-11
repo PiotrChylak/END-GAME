@@ -28,9 +28,7 @@ pub struct PlayerDecision {
 pub struct NodeMeta {
     #[key]
     pub id: u16,
-    pub text1: felt252,
-    pub text2: felt252,
-    pub text3: felt252,
+    pub text: felt252,
     pub gambling_node: bool,
     pub is_ending: bool,
 }
