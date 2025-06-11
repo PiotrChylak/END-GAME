@@ -1,5 +1,3 @@
-// Decision-based Text Novel Game Contract - Actions (in systems)
-// Contains all logic and helper functions for the text novel game.
 use stwo_the_end::models::{PlayerState, NodeMeta, Choice, PlayerDecision, GamblingLevelConfig,Chances, Multiplier};
 use stwo_the_end::events::{Decision, StoryCompleted, GamblingOutcome, InvalidChoice};
 use super::tree_constructor::tree_constructor;
@@ -84,9 +82,8 @@ pub mod actions {
                 choice 
             });
 
-            // Check if current node is a gambling node
             if node.gambling_node == true {
-                // If player chose to gamble (choice 1)
+                // gamble = choice 1
                 if choice == 1 {
                     let outcome = calculate_outcome(state.balance, config.chances, config.multiplier);
                     state.balance = outcome;
@@ -136,12 +133,7 @@ pub mod actions {
     }
 }
 
-pub fn balance_of(token_address: ContractAddress, account: ContractAddress) -> u256 {
-    let dispatcher = ITokenDispatcher { contract_address: token_address };
-    dispatcher.balance_of(token_address, account)
-}
-
-// Helper functions to transfer tokens
+// Helper function to transfer tokens
 pub fn transfer_token(token_address: ContractAddress, recipient: ContractAddress, amount: u256){
     let dispatcher = ITokenDispatcher { contract_address: token_address};
     dispatcher.transfer(token_address, recipient, amount);
@@ -156,7 +148,7 @@ fn calculate_outcome(mut balance: felt252, chances: Chances, multipliers: Multip
     if result == 1 {
         balance *= multiplier
     } else {
-        balance == 0;
+        balance = 0;
     }
     balance
 }
