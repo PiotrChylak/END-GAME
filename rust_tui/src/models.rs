@@ -4,20 +4,20 @@ use serde::{Deserialize, Serialize};
 pub struct PlayerState {
     pub player: String,
     pub balance: String,
-    pub current_node: u16,
+    pub current_node: u32,
     pub story_completed: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerDecision {
     pub player: String,
-    pub node_id: u16,
+    pub node_id: u32,
     pub choice: u8,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NodeMeta {
-    pub id: u16,
+    pub id: u32,
     pub text: String,
     pub gambling_node: bool,
     pub is_ending: bool,
@@ -25,10 +25,10 @@ pub struct NodeMeta {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Choice {
-    pub node_id: u16,
+    pub node_id: u32,
     pub choice_id: u8,
     pub text: String,
-    pub next_node: u16,
+    pub next_node: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

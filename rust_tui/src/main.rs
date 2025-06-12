@@ -27,7 +27,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut last_tick = Instant::now();
     let tick_rate = Duration::from_millis(1000);
     let mut models_display = String::new();
-    let mut current_player_node: Option<u16> = None;
+    let mut current_player_node: Option<u32> = None;
     let mut is_developer_mode = true;
 
     let client = reqwest::Client::new();

@@ -9,7 +9,7 @@ pub struct PlayerState {
     #[key]
     pub player: ContractAddress,
     pub balance: felt252,
-    pub current_node: u16,
+    pub current_node: u32,
     pub story_completed: bool,
 }
 
@@ -19,7 +19,7 @@ pub struct PlayerDecision {
     #[key]
     pub player: ContractAddress,
     #[key]
-    pub node_id: u16,
+    pub node_id: u32,
     pub choice: u8,
 }
 
@@ -27,7 +27,7 @@ pub struct PlayerDecision {
 #[dojo::model]
 pub struct NodeMeta {
     #[key]
-    pub id: u16,
+    pub id: u32,
     pub text: felt252,
     pub gambling_node: bool,
     pub is_ending: bool,
@@ -37,11 +37,11 @@ pub struct NodeMeta {
 #[dojo::model]
 pub struct Choice {
     #[key]
-    pub node_id: u16,
+    pub node_id: u32,
     #[key]
     pub choice_id: u8,
     pub text: felt252,
-    pub next_node: u16,
+    pub next_node: u32,
 }
 
 #[derive(Drop, Serde, Introspect, Copy)]

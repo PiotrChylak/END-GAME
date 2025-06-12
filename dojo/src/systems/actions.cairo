@@ -12,7 +12,7 @@ use starknet::ContractAddress;
 #[starknet::interface]
 pub trait ITextNovelGame<T> {
     fn start_new_game(ref self: T, token_address: ContractAddress);
-    fn make_decision(ref self: T, choice: u8) -> u16;
+    fn make_decision(ref self: T, choice: u8) -> u32;
 }
 
 #[dojo::contract]
@@ -55,7 +55,7 @@ pub mod actions {
             });
         }
 
-        fn make_decision(ref self: ContractState, choice: u8) -> u16 {
+        fn make_decision(ref self: ContractState, choice: u8) -> u32 {
             let mut world = self.world_default();
             let player = get_caller_address();
             let mut state: PlayerState = world.read_model(player);
