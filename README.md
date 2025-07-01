@@ -20,6 +20,7 @@
 - **Secondary**: College students, young adults.
 
 ---
+# Development prospects
 
 ## Gameplay and Mechanics
 
